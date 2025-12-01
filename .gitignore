@@ -1,0 +1,63 @@
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.la
+*.d
+
+# Precompiled headers
+*.gch
+
+# Static and shared libraries
+*.a
+*.so
+*.dll
+*.lib
+
+# Executables
+a.out
+*.out
+*.exe
+*.elf
+
+# Debug and core dumps
+*.dSYM/
+core
+core.*
+
+# Build directories
+build/
+bin/
+dist/
+obj/
+tmp/
+
+# Coverage and profiling
+*.gcno
+*.gcda
+*.gcov
+coverage/
+
+# Dependency and compilation DB
+compile_commands.json
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sw?
+*~
+.*.swp
+*.sublime-project
+*.sublime-workspace
+
+# Tags and indexes
+tags
+cscope.out
+
+# Misc
+*.log
+*.pid
+*.seed
+.DS_Store
+Thumbs.db
+.gdb_history
