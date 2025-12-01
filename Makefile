@@ -6,7 +6,7 @@
 #    By: kquetat- <kquetat-@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 07:24:40 by kquetat-          #+#    #+#              #
-#    Updated: 2025/12/01 16:06:55 by kquetat-         ###   ########.fr        #
+#    Updated: 2025/12/01 16:52:48 by kquetat-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,8 @@ ITALIC		=\033[3m
 
 ### Library name and path ###
 NAME		=	libft.a
-HEADER		=	incs
-SRCS_PATH	=	srcs
+HEADER		=	inc/libft inc/ft_printf
+SRCS_PATH	=	src
 OBJ_DIR		=	obj
 
 ### Source files ###
@@ -41,19 +41,27 @@ SRCS_BONUS =	${addprefix ${SRCS_PATH}/bonus/, ft_lstnew.c ft_lstadd_front.c \
 				ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c \
 				ft_lstclear.c ft_lstiter.c ft_lstmap.c}
 
+### ft_printf files ###
+SRCS_FT_PRINTF = ${addprefix ${SRCS_PATH}/ft_printf/src/, ft_get_precision.c ft_get_width.c \
+			print_char.c print_str.c print_int.c \
+			print_addr.c add_numflags.c int_precision.c \
+			print_unsigned.c print_hexa.c hexa_padd.c} \
+			${SRCS_PATH}/ft_printf/ft_printf.c
+
 ### Compilation and flags ###
 CC		=	gcc
-CFLAGS 	=	-Wall -Wextra -Werror -I$(HEADER)
+CFLAGS 	=	-Wall -Wextra -Werror $(addprefix -I, $(HEADER))
 
 $(OBJ_DIR)/%.o: ${SRCS_PATH}/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@printf "$(BLUE)$(BOLD)$(ITALIC)-> Compiling$(GREEN)$(BOLD)[LIBFT] => $(RESET)""$(BEIGE) <$<> \033[K\r$(RESET)"
+	@printf "$(BLUE)$(BOLD)$(ITALIC)-> Compiling $(GREEN)$(BOLD)[LIBFT] => $(RESET)""$(BEIGE) <$<> \033[K\r$(RESET)"
 
 ### Object files for the library ###
 
-OBJ			=	$(patsubst ${SRCS_PATH}/%,$(OBJ_DIR)/%,$(SRCS:.c=.o))
-OBJ_BONUS	=	$(patsubst ${SRCS_PATH}/%,$(OBJ_DIR)/%,$(SRCS_BONUS:.c=.o))
+OBJ			  =	$(patsubst ${SRCS_PATH}/%,$(OBJ_DIR)/%,$(SRCS:.c=.o))
+OBJ_BONUS	  =	$(patsubst ${SRCS_PATH}/%,$(OBJ_DIR)/%,$(SRCS_BONUS:.c=.o))
+OBJ_FT_PRINTF = $(patsubst ${SRCS_PATH}/%,$(OBJ_DIR)/%,$(SRCS_FT_PRINTF:.c=.o))
 
 ### Remove files ###
 RM	=	rm -f
@@ -61,10 +69,10 @@ RM	=	rm -f
 ### Rules ###
 all:		$(NAME)
 
-$(NAME):	$(OBJ) $(OBJ_BONUS)
+$(NAME):	$(OBJ) $(OBJ_BONUS) $(OBJ_FT_PRINTF)
 	@echo "\n"
 	@printf "\n\t$(BEIGE)$(BOLD)$(ITALIC)All libft files compiled$(RESET) ✨\n\n"
-	@ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)
+	@ar rcs $(NAME) $(OBJ) $(OBJ_BONUS) $(OBJ_FT_PRINTF)
 	@printf "$(BOLD)$(ITALIC)$(LGREEN)libft.a built successfully$(RESET) ✅\n"
 
 clean:
@@ -72,7 +80,7 @@ clean:
 	@printf "\n\t$(VIOLET)$(BOLD)$(ITALIC)Libft object files removed$(RESET) ... ❌\n\n"
 
 fclean:	clean
-	@$(RM) $(NAME) $(OBJ_BONUS)
+	@$(RM) $(NAME)
 	@printf "\n\t$(VIOLET)$(BOLD)$(ITALIC)Libft.a removed$(RESET) ... ❌\n\n"
 
 re:	fclean all
